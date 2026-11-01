@@ -1,0 +1,72 @@
+{
+  "name": "dsh-opencode-cost",
+  "version": "0.1.5",
+  "description": "Independent DSH plugin for OpenCode Zen/Go token-price estimates",
+  "private": true,
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "import": "./lib/index.js"
+    },
+    "./dsh-plugin.json": "./dsh-plugin.json",
+    "./cordis.patch.yml": "./cordis.patch.yml"
+  },
+  "files": [
+    "lib",
+    "src",
+    "cordis.patch.yml",
+    "dsh-plugin.json",
+    "examples",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": "^22.19 || >=24"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "npm run build && node --test test/*.test.mjs",
+    "prepack": "npm run build"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "^4.0.5",
+    "@deepseek-ai/schemastery": "^3.18.1",
+    "@deepseek-ai/dsh-agent": ">=0.2.1-rc.2 <0.3.0",
+    "@deepseek-ai/dsh-session": ">=0.2.1-rc.2 <0.3.0",
+    "@deepseek-ai/dsh-session-projection": ">=0.2.1-rc.2 <0.3.0",
+    "@deepseek-ai/dsh-commands": ">=0.2.1-rc.2 <0.3.0",
+    "@deepseek-harness-tui/dsh-tui": "^0.17.0"
+  },
+  "dependencies": {
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@deepseek-ai/cordis": "4.0.5",
+    "@deepseek-ai/schemastery": "3.18.5",
+    "@deepseek-ai/dsh-agent": "0.2.1-rc.3",
+    "@deepseek-ai/dsh-session": "0.2.1-rc.3",
+    "@deepseek-ai/dsh-session-projection": "0.2.1-rc.3",
+    "@deepseek-ai/dsh-commands": "0.2.1-rc.3",
+    "@deepseek-harness-tui/dsh-tui": "0.17.0",
+    "typescript": "^6.0.3",
+    "@types/node": "^24.0.0"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/c0mm4nd/dsh-opencode-cost.git"
+  },
+  "homepage": "https://github.com/c0mm4nd/dsh-opencode-cost#readme",
+  "bugs": {
+    "url": "https://github.com/c0mm4nd/dsh-opencode-cost/issues"
+  },
+  "packageManager": "pnpm@11.28.8"
+}

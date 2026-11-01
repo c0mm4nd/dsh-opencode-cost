@@ -1,0 +1,6 @@
+# Merge this row override into ~/.dsh/profiles/dsh-tui/cordis.patch.yml.
+# The bundle already inserts the row. Do not insert another one.
+- id: opencode-cost
+  config:
+    providers:
+      my-provider: opencode-go

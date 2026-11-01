@@ -1,0 +1,38 @@
+{
+  "$schema": "https://dsh.community/schemas/dsh-plugin-0.15.json",
+  "manifestVersion": "0.15",
+  "id": "local.opencode-cost",
+  "name": "OpenCode Zen / Go Cost",
+  "version": "0.1.5",
+  "facets": {
+    "host": {
+      "entry": "lib/index.js",
+      "apiVersion": "v1alpha1"
+    }
+  },
+  "requires": {
+    "contracts": [
+      {
+        "apiVersion": "commands.dsh/v1alpha1",
+        "kind": "Command"
+      }
+    ]
+  },
+  "permissions": [
+    {
+      "name": "commands.invoke",
+      "scope": "local.opencode-cost.opencode-cost",
+      "reason": "Show the current session token-price estimate"
+    }
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "id": "local.opencode-cost.opencode-cost",
+        "title": "OpenCode cost"
+      }
+    ]
+  },
+  "subscriptions": [],
+  "license": "MIT"
+}
