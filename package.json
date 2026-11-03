@@ -1,6 +1,6 @@
 {
   "name": "dsh-opencode-cost",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Independent DSH plugin for OpenCode Zen/Go token-price estimates",
   "private": true,
   "type": "module",

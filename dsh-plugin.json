@@ -3,7 +3,7 @@
   "manifestVersion": "0.15",
   "id": "local.opencode-cost",
   "name": "OpenCode Zen / Go Cost",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "facets": {
     "host": {
       "entry": "lib/index.js",

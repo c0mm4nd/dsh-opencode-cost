@@ -142,11 +142,17 @@ export function tokenTotal(bucket: TokenBucket): number {
 /** Missing cache prices or missing request sizes stay visibly unpriced. */
 export function estimateOpenCodeCost(provider: OpenCodeProvider, model: string, buckets: CostTokenBuckets): {
   amount: number; pricedTokens: number; unpricedTokens: number
+  /** Priced spend on cache reads plus cache writes. */
+  cacheAmount: number
+  /** Priced spend on uncached input plus output. */
+  nonCacheAmount: number
 } {
   const table = provider === 'opencode-go' ? GO : ZEN
   const price = Object.hasOwn(table, model) ? table[model] : undefined
   let amount = 0
   let pricedTokens = 0
+  let cacheAmount = 0
+  let nonCacheAmount = 0
   const total = tokenTotal(buckets.peak) + tokenTotal(buckets.idle)
   if (price !== undefined) {
     const parts = price.context === undefined
@@ -162,12 +168,16 @@ export function estimateOpenCodeCost(provider: OpenCodeProvider, model: string, 
         tokens.forEach((count, index) => {
           const rate = rates[index]
           if (rate !== undefined) {
-            amount += count * rate / 1_000_000
+            const cost = count * rate / 1_000_000
+            amount += cost
+            if (index === 2 || index === 3) cacheAmount += cost
+            else nonCacheAmount += cost
             pricedTokens += count
           }
         })
       }
     }
   }
-  return { amount, pricedTokens, unpricedTokens: Math.max(0, total - pricedTokens) }
+  return { amount, pricedTokens, unpricedTokens: Math.max(0, total - pricedTokens),
+    cacheAmount, nonCacheAmount }
 }
