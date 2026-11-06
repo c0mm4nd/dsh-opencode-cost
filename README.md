@@ -4,12 +4,12 @@ An independent DSH plugin that estimates model token costs using OpenCode Zen an
 
 ## Install
 
-Requires an existing **DSH 0.2.1-rc.2 / rc.3**, **dsh-TUI 0.17.0**, and Node.js **22.19+ (22.x) or 24+** installation.
+Requires an existing **DSH 0.2.1-rc.2 or newer** (tested with 0.2.2-rc.1), **dsh-TUI 0.17.0–0.19.x**, and Node.js **22.19+ (22.x) or 24+** installation.
 
 Download the `.tgz` from [Releases](https://github.com/c0mm4nd/dsh-opencode-cost/releases), then run:
 
 ```sh
-dsh plugin --profile dsh-tui add /absolute/path/dsh-opencode-cost-0.1.6.tgz
+dsh plugin --profile dsh-tui add /absolute/path/dsh-opencode-cost-0.1.7.tgz
 ```
 
 Providers named `opencode`, `opencode-zen`, and `opencode-go` work automatically. For a custom provider or aggregator, merge this override into `~/.dsh/profiles/dsh-tui/cordis.patch.yml`:

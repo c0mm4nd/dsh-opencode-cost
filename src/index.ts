@@ -17,8 +17,16 @@ export const Config: Schema<Config> = Schema.object({
 })
 // DSH-native commands and session lifecycle; TUI contributes only a footer field.
 export const inject = ['sessionProjections', 'sessions', 'agents', 'commands', 'tuiStatus']
-export function apply(ctx: Context, config: Config): void {
-  ctx.sessionProjections.register(projection)
+export async function apply(ctx: Context, config: Config): Promise<void> {
+  // DSH 0.2.2 awaits a registration handle that owns typed `stateOf`; 0.2.1
+  // returned the disposer directly. Keep both working: await covers either
+  // shape, and the registry read stays as the legacy fallback.
+  const registration = await ctx.sessionProjections.register(projection) as unknown
+  const handle = registration as { stateOf?: (session: Session) => CostState }
+  const stateOf = (session: Session): CostState | undefined =>
+    typeof handle?.stateOf === 'function'
+      ? handle.stateOf(session)
+      : ctx.sessionProjections.stateOf(session, KEY) as CostState | undefined
   let selected: Session | undefined
   let clear: (() => void) | undefined
   let previous = ''
@@ -50,10 +58,10 @@ export function apply(ctx: Context, config: Config): void {
     }
   }
   const collect = (root: Session) => {
-    const rootState = ctx.sessionProjections.stateOf(root, KEY)
+    const rootState = stateOf(root)
     if (rootState === undefined) return undefined
     const descendants = descendantStates(root, ctx.sessions.list(), retained,
-      session => ctx.sessionProjections.stateOf(session, KEY))
+      session => stateOf(session))
     for (const entry of descendants.entries) lastKnown.set(entry.id, entry.state)
     return { states: [rootState, ...descendants.entries.map(entry => entry.state)],
       subagents: descendants.agents, running: descendants.running }
@@ -130,7 +138,7 @@ export function apply(ctx: Context, config: Config): void {
       // for a child that never emitted a usage event.
       let state = lastKnown.get(id)
       if (state === undefined) {
-        try { state = ctx.sessionProjections.stateOf(session, KEY) } catch { state = undefined }
+        try { state = stateOf(session) } catch { state = undefined }
       }
       if (state !== undefined) retained.set(id, { parent, state })
       lastKnown.delete(id)

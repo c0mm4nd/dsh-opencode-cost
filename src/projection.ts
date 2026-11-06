@@ -94,10 +94,10 @@ export function fold(state: CostState, event: SessionEvent): CostState {
   if (delta === undefined) return { ...state, lastSeq: event.seq }
   return record({ ...state, lastSeq: event.seq }, state.provider, state.model, delta, event.time)
 }
-export const projection: ProjectionDefinition<typeof KEY> = {
+export const projection: ProjectionDefinition<typeof KEY, CostState> = {
   key: KEY, stateVersion: 2,
   // DSH rc.2/rc.3 types pin Zod 4.4 internals; the registry only calls parse().
   // Keep the plugin on patched Zod without replacing the host's dependency.
-  stateSchema: stateSchema as unknown as ProjectionDefinition<typeof KEY>['stateSchema'],
+  stateSchema: stateSchema as unknown as ProjectionDefinition<typeof KEY, CostState>['stateSchema'],
   init: (_header, inherited) => initialState(inherited), apply: fold,
 }
